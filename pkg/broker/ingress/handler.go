@@ -145,6 +145,7 @@ func (h *Handler) ServeHTTP(response nethttp.ResponseWriter, request *nethttp.Re
 		response.Write([]byte(msg))
 		return
 	}
+	response.WriteHeader(statusCode)
 }
 
 // toEvent converts an http request to an event.
@@ -167,7 +168,7 @@ func (h *Handler) toEvent(request *nethttp.Request) (event *cev2.Event, msg stri
 		h.logger.Error(msg)
 		return nil, msg, nethttp.StatusBadRequest
 	}
-	return event, "", nethttp.StatusOK
+	return event, "", nethttp.StatusAccepted
 }
 
 func (h *Handler) reportMetrics(ctx context.Context, ns, broker string, event *cev2.Event, statusCode int, start time.Time) {
